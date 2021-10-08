@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>CityBike | Administration</title>
+
+    <link rel="stylesheet" href="/magic.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .magictime {
+            -webkit-animation-duration: 2s;
+            animation-duration: 2s;
+        }
+    </style>
+
+    <script>
+        function deleteResultMessage() {
+            $("#result-message").addClass("magictime puffOut");
+        }
+        function toggleFormAdd() {
+            $("#form-add").toggle();
+        }
+        function sendSaveBikeRequest(){
+            var nameBike = $("#nameBike").val();
+            var quantityBike = $("#quantityBike").val();
+            var priceBike = $("#priceBike").val();
+            var url = "http://localhost:8080/admin/bikes?name=" + nameBike + "&quantity=" +
+                            quantityBike + "&price=" + priceBike;
+            $.post(url, function(data){
+                $("#result-message").html(data);
+                $("#result-message").removeClass("magictime puffOut");
+                $("#result-message").show();
+                setTimeout(deleteResultMessage, 2000);
+                $("#form-add").toggle();
+            }).done(function(response)
+            {
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            });
+        }
+
+        function deleteBike(bikeId){
+            $.ajax({
+                url: "/admin/bikes/"+bikeId,
+                type: "delete"
+            });
+
+            $("#"+productId).parent().parent().remove();
+            $("#result-message").html("The bicycle was deleted.");
+            $("#result-message").removeClass("magictime puffOut");
+            $("#result-message").show();
+            setTimeout(deleteResultMessage, 2000);
+        }
+    </script>
+
+</head>
+<body>
+
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <h5 class="my-0 mr-md-auto font-weight-normal">CityBike</h5>
+</div>
+
+<div class="shop-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center" style="max-width: 700px;">
+    <h1 class="display-4">Bicycle administration</h1>
+</div>
+
+<div class="container" style="max-width: 960px;">
+
+    <div class="alert alert-primary" role="alert" id="result-message" style="display: none">
+
+    </div>
+
+    <button type="button" class="btn btn-info" onclick="toggleFormAdd();">Add bicycle</button>
+
+    <form id="form-add" style="display: none">
+        <div class="form-group">
+            <label for="nameBike">Name</label>
+            <input type="text" class="form-control" id="nameBike">
+        </div>
+
+        <div class="form-group">
+            <label for="priceBike">Price</label>
+            <input type="text" class="form-control" id="priceBike">
+        </div>
+
+        <div class="form-group">
+            <label for="quantityBike">Quantity</label>
+            <input type="text" class="form-control" id="quantityBike">
+        </div>
+
+        <button type="button" class="btn btn-info" onclick="sendSaveBikeRequest();">Save</button>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="p : ${bikes}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.price}"></td>
+            <td th:text="${p.quantity}"></td>
+            <td>
+                <button type="submit" th:id="${p.id}" onclick="deleteBike(this.id);" class="btn btn-outline-danger">
+                    Delete
+                </button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

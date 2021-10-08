@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>CityBike | Register</title>
+
+</head>
+<body>
+<center>
+    <img src="https://logopond.com/logos/cbd235805987c6e320630b38ecbab381.png">
+    <h2 class="display-4">Register</h2>
+    <br />
+
+
+<form action="/register-form" style="width: 400px; margin: auto;">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <small id="emailHelp" class="form-text text-muted">We will never share your email with anyone else.</small>
+    </div>
+
+    <div class="form-group">
+        <label fpr="exampleInputPassword1">Password</label>
+        <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+    </div>
+
+    <div class="form-group">
+        <label fpr="exampleInputPassword2">Password</label>
+        <input name="password-again" type="password" class="form-control" id="exampleInputPassword2">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <p th:text="${message}"></p>
+
+
+</form>
+</center>
+</body>
+</html>
